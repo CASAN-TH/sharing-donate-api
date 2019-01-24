@@ -27,7 +27,7 @@ describe('Donate CRUD routes tests', function () {
                     url: 'image1-1.png'
                 }
             ],
-            donator: 'pure'
+            donator: 'pure' 
         };
         credentials = {
             username: 'username',
