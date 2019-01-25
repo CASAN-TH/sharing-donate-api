@@ -16,18 +16,18 @@ describe('Donate CRUD routes tests', function () {
 
     before(function (done) {
         mockup = {
-            name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ S',
-            size: 'S',
-            detail: 'เสื้อยี่ห้อ 1 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
+            name: "เสื้อยืดสีฟ้าลายการ์ตูนไซส์ S",
+            size: "S",
+            detail: "เสื้อยี่ห้อ 1 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่",
             image: [
                 {
-                    url: 'image1.png'
+                    url: "image1.png"
                 },
                 {
-                    url: 'image1-1.png'
+                    url: "image1-1.png"
                 }
             ],
-            donator: 'pure' 
+            donator: "pure"
         };
         credentials = {
             username: 'username',
@@ -53,6 +53,7 @@ describe('Donate CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
+                console.log(resp);
                 done();
             });
     });
@@ -161,7 +162,7 @@ describe('Donate CRUD routes tests', function () {
 
     });
 
-    xit('should be donate get not use token', (done) => {
+    it('should be donate get not use token', (done) => {
         request(app)
             .get('/api/donates')
             .expect(403)
@@ -172,7 +173,7 @@ describe('Donate CRUD routes tests', function () {
             .end(done);
     });
 
-    xit('should be donate post not use token', function (done) {
+    it('should be donate post not use token', function (done) {
 
         request(app)
             .post('/api/donates')
@@ -186,7 +187,7 @@ describe('Donate CRUD routes tests', function () {
 
     });
 
-    xit('should be donate put not use token', function (done) {
+    it('should be donate put not use token', function (done) {
 
         request(app)
             .post('/api/donates')
@@ -214,7 +215,7 @@ describe('Donate CRUD routes tests', function () {
 
     });
 
-    xit('should be donate delete not use token', function (done) {
+    it('should be donate delete not use token', function (done) {
 
         request(app)
             .post('/api/donates')
@@ -235,6 +236,10 @@ describe('Donate CRUD routes tests', function () {
                     })
                     .end(done);
             });
+
+    });
+
+    it('Pure : should be donate get by size, user token', () => {
 
     });
 
