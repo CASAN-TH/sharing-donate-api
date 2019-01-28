@@ -1,12 +1,12 @@
 'use strict';
 var mongoose = require('mongoose'),
-    model = require('../models/model'), 
+    model = require('../models/model'),
     Donate = mongoose.model('Donate'),
     errorHandler = require('../../core/controllers/errors.server.controller'),
     _ = require('lodash');
-    
+
 exports.getList = function (req, res) {
-        Donate.find(function (err, datas) {
+    Donate.find(function (err, datas) {
         if (err) {
             return res.status(400).send({
                 status: 400,
@@ -22,9 +22,9 @@ exports.getList = function (req, res) {
 };
 
 exports.create = function (req, res) {
-        var newDonate = new Donate(req.body);
-        newDonate.createby = req.user;
-        newDonate.save(function (err, data) {
+    var newDonate = new Donate(req.body);
+    newDonate.createby = req.user;
+    newDonate.save(function (err, data) {
         if (err) {
             return res.status(400).send({
                 status: 400,
@@ -102,3 +102,28 @@ exports.delete = function (req, res) {
         };
     });
 };
+
+exports.findDonateDetailById = function (req, res, next) {
+    // console.log(req.body.id);
+    var id = req.body.id
+    Donate.findById(id, function (err, datas) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            // console.log(datas);
+            req.donateDetailData = datas
+            next()
+        }
+    })
+    
+}
+
+exports.returnDonateDetail = function (req, res) {
+    res.jsonp({
+        status: 200,
+        data: req.donateDetailData
+    })
+}
