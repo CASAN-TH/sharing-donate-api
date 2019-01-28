@@ -98,7 +98,7 @@ describe('Donate CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
-                console.log(resp);
+                // console.log(resp);
                 assert.equal(resp.data.name, mockup.name);
                 assert.equal(resp.data.size, mockup.size);
                 assert.equal(resp.data.donator, mockup.donator);
@@ -236,6 +236,71 @@ describe('Donate CRUD routes tests', function () {
                     })
                     .end(done);
             });
+
+    });
+
+    it('should be get Donate-Detail By id', function (done) {
+
+        var Donate1 = new Donate({
+            name: "เสื้อยืด D.Va",
+            size: "L",
+            detail: "ลิมิเต็ด เฉพาะคนซื้อคนแรกที่ได้ลิมิเต็ดจะต้องชำระค่าบริการหลังการขาย",
+            image: [
+                {
+                    url: "Dva1.png"
+                },
+                {
+                    url: "Dva2.png"
+                }
+            ],
+            donator: "nutnut"
+        })
+        var Donate2 = new Donate({
+            name: "เสื้อลายทหาร",
+            size: "M",
+            detail: "กินได้ ขายอร่อย ฝากก็งาม",
+            image: [
+                {
+                    url: "militaryProt.png"
+                },
+                {
+                    url: "Conan.png"
+                }
+            ],
+            donator: "purity"
+        })
+
+        Donate2.save(function (err, do2) {
+            if (err) {
+                return done(err)
+            }
+            Donate1.save(function (err, do1) {
+                if (err) {
+                    return done(err)
+                }
+
+                var donate_id = {
+                    id: do1._id
+                }
+                request(app)
+                    .post('/api/donate-detail')
+                    .set('Authorization', 'Bearer ' + token)
+                    .send(donate_id)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+                        // console.log(resp)
+                        assert.equal(resp.data.name, 'เสื้อยืด D.Va')
+                        assert.equal(resp.data.size, 'L')
+                        assert.equal(resp.data.detail, 'ลิมิเต็ด เฉพาะคนซื้อคนแรกที่ได้ลิมิเต็ดจะต้องชำระค่าบริการหลังการขาย')
+                        assert.equal(resp.data.donator, 'nutnut')
+                        done()
+                    });
+            })
+        })
 
     });
 

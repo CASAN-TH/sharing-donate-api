@@ -13,5 +13,11 @@ module.exports = function (app) {
         .put(controller.update)
         .delete(controller.delete);
 
+    app.route('/api/donate-detail')
+        .post(
+            controller.findDonateDetailById,
+            controller.returnDonateDetail
+        )
+
     app.param('donateId', controller.getByID);
 }
