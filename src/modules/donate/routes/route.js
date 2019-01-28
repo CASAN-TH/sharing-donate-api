@@ -13,7 +13,7 @@ module.exports = function (app) {
         .put(controller.update)
         .delete(controller.delete);
 
-    app.route('/api/donate-detail')
+    app.route('/api/donate-detail').all(policy.isAllowed)
         .post(
             controller.findDonateDetailById,
             controller.returnDonateDetail

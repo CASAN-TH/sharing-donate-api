@@ -239,7 +239,7 @@ describe('Donate CRUD routes tests', function () {
 
     });
 
-    it('should be get Donate-Detail By id', function (done) {
+    xit('should be get Donate-Detail By id', function (done) {
 
         var Donate1 = new Donate({
             name: "เสื้อยืด D.Va",
