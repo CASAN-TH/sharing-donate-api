@@ -19,5 +19,11 @@ module.exports = function (app) {
             controller.returnDonateDetail
         )
 
+    app.route('/api/accept-donate').all(policy.isAllowed)
+        .post(
+            controller.findAndUpdateDonate,
+            controller.returnAcceptData
+        )
+
     app.param('donateId', controller.getByID);
 }
