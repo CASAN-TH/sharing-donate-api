@@ -23,6 +23,14 @@ exports.invokeRolesPolicies = function() {
         {
           resources: "/api/donates/:donateId",
           permissions: "*"
+        },
+        {
+          resources: "/api/donate-detail",
+          permissions: "*"
+        },
+        {
+          resources: "/api/accept-donate",
+          permissions: "*"
         }
       ]
     }

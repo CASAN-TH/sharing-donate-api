@@ -53,7 +53,7 @@ describe('Donate CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
-                console.log(resp);
+                // console.log(resp);
                 done();
             });
     });
@@ -239,7 +239,7 @@ describe('Donate CRUD routes tests', function () {
 
     });
 
-    xit('should be get Donate-Detail By id', function (done) {
+    it('should be get Donate-Detail By id', function (done) {
 
         var Donate1 = new Donate({
             name: "เสื้อยืด D.Va",
@@ -304,63 +304,68 @@ describe('Donate CRUD routes tests', function () {
 
     });
 
-    it('Pure : should be donate get by size, user token', () => {
+    it('Update That!!! Accept Donate', function (done) {
+
+        var Donate1 = new Donate({
+            name: "เสื้อยืด D.Va",
+            size: "L",
+            detail: "ลิมิเต็ด เฉพาะคนซื้อคนแรกที่ได้ลิมิเต็ดจะต้องชำระค่าบริการหลังการขาย",
+            image: [
+                {
+                    url: "Dva1.png"
+                },
+                {
+                    url: "Dva2.png"
+                }
+            ],
+            donator: "nutnut"
+        })
+        var Donate2 = new Donate({
+            name: "เสื้อลายทหาร",
+            size: "M",
+            detail: "กินได้ ขายอร่อย ฝากก็งาม",
+            image: [
+                {
+                    url: "militaryProt.png"
+                },
+                {
+                    url: "Conan.png"
+                }
+            ],
+            donator: "purity"
+        })
+
+        Donate2.save(function (err, do2) {
+            if (err) {
+                return done(err)
+            }
+            Donate1.save(function (err, do1) {
+                if (err) {
+                    return done(err)
+                }
+
+                var id = {
+                    product_id: do1._id,
+                    user_id: '1111'
+                }
+                request(app)
+                    .post('/api/accept-donate')
+                    .set('Authorization', 'Bearer ' + token)
+                    .send(id)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+                        assert.equal(resp.data.status, false)
+                        assert.equal(resp.data.revicer, id.user_id)
+                        done()
+                    });
+            })
+        })
 
     });
-
-    // it('should be donate post and save use token', (done) => {
-    //     var donate1 = new Donate({
-    //         name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ S',
-    //         size: 'S',
-    //         detail: 'เสื้อยี่ห้อ 1 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
-    //         image: [
-    //             {
-    //                 url: 'image1-1.png'
-    //             },
-    //             {
-    //                 url: 'image1-2.png'
-    //             }
-    //         ],
-    //         donator: 'pure'
-    //     });
-
-    //     var body = {
-    //         name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ S',
-    //         size: 'S',
-    //         detail: 'เสื้อยี่ห้อ 1 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
-    //         image: [
-    //             {
-    //                 url: 'image1-1.png'
-    //             },
-    //             {
-    //                 url: 'image1-2.png'
-    //             }
-    //         ],
-    //         donator: 'pure'
-    //     }
-
-    //     donate1.save((err, don1) => {
-    //         if (err) {
-    //             return done(err);
-    //         }
-    //         request(app)
-    //             .post('/api/donates')
-    //             // .set('Authorization', 'Bearer' + token)
-    //             .send(body)
-    //             .expect(200)
-    //             .end((err, res) => {
-    //                 if (err) {
-    //                     return done(err);
-    //                 }
-    //                 var resp = res.body;
-    //                 console.log(resp);
-    //                 // assert.equal(resp.data.name, mockup.name);
-    //                 done();
-    //             });
-    //     });
-
-
-    // });
 
     afterEach(function (done) {
         Donate.remove().exec(done);

@@ -118,12 +118,37 @@ exports.findDonateDetailById = function (req, res, next) {
             next()
         }
     })
-    
+
 }
 
 exports.returnDonateDetail = function (req, res) {
     res.jsonp({
         status: 200,
         data: req.donateDetailData
+    })
+}
+
+exports.findAndUpdateDonate = function (req, res, next) {
+    var product_id = req.body.product_id
+    var user_id = req.body.user_id
+    Donate.findByIdAndUpdate(product_id, { status: false, revicer: user_id }, { new: true }, function (err, datas) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            req.acceptData = datas
+            // console.log(req.AcceptData)
+            next()
+        }
+    })
+    
+}
+
+exports.returnAcceptData = function (req, res) {
+    res.jsonp({
+        status: 200,
+        data: req.acceptData
     })
 }
