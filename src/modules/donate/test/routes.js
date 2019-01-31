@@ -385,7 +385,7 @@ describe('Donate CRUD routes tests', function () {
         })
         var Donate2 = new Donate({
             name: "เสื้อลายทหาร",
-            size: "M",
+            size: "L",
             detail: "กินได้ ขายอร่อย ฝากก็งาม",
             image: [
                 {
@@ -395,7 +395,8 @@ describe('Donate CRUD routes tests', function () {
                     url: "Conan.png"
                 }
             ],
-            donator: "purity"
+            donator: "purity",
+            status: false
         })
 
         Donate2.save(function (err, do2) {
@@ -420,6 +421,7 @@ describe('Donate CRUD routes tests', function () {
                             return done(err);
                         }
                         var resp = res.body;
+                        console.log(resp);
                         assert.equal(resp.data[0].size, 'L')
                         done()
                     });
