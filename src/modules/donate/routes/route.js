@@ -25,5 +25,11 @@ module.exports = function (app) {
             controller.returnAcceptData
         )
 
+    app.route('/api/get-donate-by-size')
+        .post(
+            controller.fineDonateBySize,
+            controller.returnSize
+        )
+
     app.param('donateId', controller.getByID);
 }
