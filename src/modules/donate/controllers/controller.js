@@ -155,7 +155,7 @@ exports.returnAcceptData = function (req, res) {
 
 exports.fineDonateBySize = function (req, res, next) {
     var getSize = req.body.size
-    Donate.find({size: getSize},function (err, do1) {
+    Donate.find({size: getSize, status: true},function (err, do1) {
         if (err) {
             return res.status(400).send({
                 status: 400,
