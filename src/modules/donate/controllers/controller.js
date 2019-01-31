@@ -143,12 +143,35 @@ exports.findAndUpdateDonate = function (req, res, next) {
             next()
         }
     })
-    
+
 }
 
 exports.returnAcceptData = function (req, res) {
     res.jsonp({
         status: 200,
         data: req.acceptData
+    })
+}
+
+exports.fineDonateBySize = function (req, res, next) {
+    var getSize = req.body.size
+    Donate.find({size: getSize},function (err, do1) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            req.getDonateBySize = do1
+            next()
+        }
+    })
+    
+}
+
+exports.returnSize = function (req, res) {
+    res.jsonp({
+        status: 200,
+        data: req.getDonateBySize
     })
 }

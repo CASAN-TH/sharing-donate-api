@@ -367,6 +367,67 @@ describe('Donate CRUD routes tests', function () {
 
     });
 
+    it('This is get Donate By size', function (done) {
+
+        var Donate1 = new Donate({
+            name: "เสื้อยืด D.Va",
+            size: "L",
+            detail: "ลิมิเต็ด เฉพาะคนซื้อคนแรกที่ได้ลิมิเต็ดจะต้องชำระค่าบริการหลังการขาย",
+            image: [
+                {
+                    url: "Dva1.png"
+                },
+                {
+                    url: "Dva2.png"
+                }
+            ],
+            donator: "nutnut"
+        })
+        var Donate2 = new Donate({
+            name: "เสื้อลายทหาร",
+            size: "M",
+            detail: "กินได้ ขายอร่อย ฝากก็งาม",
+            image: [
+                {
+                    url: "militaryProt.png"
+                },
+                {
+                    url: "Conan.png"
+                }
+            ],
+            donator: "purity"
+        })
+
+        Donate2.save(function (err, do2) {
+            if (err) {
+                return done(err)
+            }
+            Donate1.save(function (err, do1) {
+                if (err) {
+                    return done(err)
+                }
+
+                var getSize = {
+                    size: 'L'
+                }
+                request(app)
+                    .post('/api/get-donate-by-size')
+                    .set('Authorization', 'Bearer ' + token)
+                    .send(getSize)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+                        assert.equal(resp.data[0].size, 'L')
+                        done()
+                    });
+            })
+        })
+
+    });
+
     afterEach(function (done) {
         Donate.remove().exec(done);
     });
