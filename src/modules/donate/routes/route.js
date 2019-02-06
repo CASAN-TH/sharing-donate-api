@@ -31,5 +31,8 @@ module.exports = function (app) {
             controller.returnSize
         )
 
+    app.route('/api/all-donates')
+        .get(controller.getList)
+
     app.param('donateId', controller.getByID);
 }
