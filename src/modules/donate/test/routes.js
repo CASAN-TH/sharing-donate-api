@@ -367,6 +367,62 @@ describe('Donate CRUD routes tests', function () {
 
     });
 
+    it('should be get Donates not use token', function (done) {
+
+        var Donate1 = new Donate({
+            name: "เสื้อยืด D.Va",
+            size: "L",
+            detail: "ลิมิเต็ด เฉพาะคนซื้อคนแรกที่ได้ลิมิเต็ดจะต้องชำระค่าบริการหลังการขาย",
+            image: [
+                {
+                    url: "Dva1.png"
+                },
+                {
+                    url: "Dva2.png"
+                }
+            ],
+            donator: "nutnut"
+        })
+        var Donate2 = new Donate({
+            name: "เสื้อลายทหาร",
+            size: "M",
+            detail: "กินได้ ขายอร่อย ฝากก็งาม",
+            image: [
+                {
+                    url: "militaryProt.png"
+                },
+                {
+                    url: "Conan.png"
+                }
+            ],
+            donator: "purity"
+        })
+
+        Donate2.save(function (err, do2) {
+            if (err) {
+                return done(err)
+            }
+            Donate1.save(function (err, do1) {
+                if (err) {
+                    return done(err)
+                }
+                request(app)
+                    .get('/api/all-donates')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+                        // console.log(resp);
+                        assert.equal(resp.data[0].name, 'เสื้อลายทหาร')
+                        done()
+                    });
+            })
+        })
+
+    });
+
     it('This is get Donate By size', function (done) {
 
         var Donate1 = new Donate({
@@ -421,7 +477,7 @@ describe('Donate CRUD routes tests', function () {
                             return done(err);
                         }
                         var resp = res.body;
-                        console.log(resp);
+                        // console.log(resp);
                         assert.equal(resp.data[0].size, 'L')
                         done()
                     });
