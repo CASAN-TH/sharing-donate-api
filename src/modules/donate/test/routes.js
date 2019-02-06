@@ -381,7 +381,8 @@ describe('Donate CRUD routes tests', function () {
                     url: "Dva2.png"
                 }
             ],
-            donator: "nutnut"
+            donator: "nutnut",
+            status: false
         })
         var Donate2 = new Donate({
             name: "เสื้อลายทหาร",
