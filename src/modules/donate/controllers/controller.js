@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
     _ = require('lodash');
 
 exports.getList = function (req, res) {
-    Donate.find(function (err, datas) {
+    Donate.find({ status: true }, function (err, datas) {
         if (err) {
             return res.status(400).send({
                 status: 400,
@@ -155,7 +155,7 @@ exports.returnAcceptData = function (req, res) {
 
 exports.fineDonateBySize = function (req, res, next) {
     var getSize = req.body.size
-    Donate.find({size: getSize, status: true},function (err, do1) {
+    Donate.find({ size: getSize, status: true }, function (err, do1) {
         if (err) {
             return res.status(400).send({
                 status: 400,
@@ -166,7 +166,7 @@ exports.fineDonateBySize = function (req, res, next) {
             next()
         }
     })
-    
+
 }
 
 exports.returnSize = function (req, res) {
