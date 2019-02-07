@@ -29,7 +29,7 @@ var DonateSchema = new Schema({
     donator: {
         type: String,
     },
-    revicer: {
+    receiver: {
         type: String,
     },
     created: {
