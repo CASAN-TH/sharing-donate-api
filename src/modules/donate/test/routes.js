@@ -581,7 +581,7 @@ describe('Donate CRUD routes tests', function () {
                                         assert.equal(resp.data[1].receiver, donate3.receiver);
                                         done();
                                     });
-                            }
+                            } 
                         });
                     }
                 });
