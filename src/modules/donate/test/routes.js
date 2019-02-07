@@ -359,7 +359,7 @@ describe('Donate CRUD routes tests', function () {
                         }
                         var resp = res.body;
                         assert.equal(resp.data.status, false)
-                        assert.equal(resp.data.revicer, id.user_id)
+                        assert.equal(resp.data.receiver, id.user_id)
                         done()
                     });
             })
@@ -486,6 +486,295 @@ describe('Donate CRUD routes tests', function () {
         })
 
     });
+
+    it('should be donate history get by user', (done) => {
+        var donate1 = new Donate({
+            name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ S',
+            size: 'S',
+            detail: 'เสื้อยี่ห้อ 1 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
+            image: [
+                {
+                    url: 'image1-1.png'
+                },
+                {
+                    url: 'image1-2.png'
+                }
+            ],
+            donator: '001',
+            receiver: ''
+        });
+
+        var donate2 = new Donate({
+            name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ M',
+            size: 'M',
+            detail: 'เสื้อยี่ห้อ 2 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
+            image: [
+                {
+                    url: 'image2-1.png'
+                },
+                {
+                    url: 'image2-2.png'
+                }
+            ],
+            donator: '002',
+            receiver: ''
+        });
+
+        var donate3 = new Donate({
+            name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ L',
+            size: 'L',
+            detail: 'เสื้อยี่ห้อ 3 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
+            image: [
+                {
+                    url: 'image3-1.png'
+                },
+                {
+                    url: 'image3-2.png'
+                }
+            ],
+            donator: '003',
+            receiver: '001'
+        });
+
+        var body = {
+            donator: '001',
+            receiver: '001'
+        }
+
+        donate1.save((err, don3) => {
+            if (err) {
+                return done(err);
+            } else {
+                donate2.save((err, don1) => {
+                    if (err) {
+                        return done(err);
+                    } else {
+                        donate3.save((err, don2) => {
+                            if (err) {
+                                return done(err);
+                            } else {
+                                request(app)
+                                    .post('/api/donates-history-all')
+                                    .set('Authorization', 'Bearer ' + token)
+                                    .send(body)
+                                    .expect(200)
+                                    .end((err, res) => {
+                                        if (err) {
+                                            return done(err);
+                                        }
+                                        var resp = res.body;
+                                        console.log(resp);
+                                        assert.equal(resp.data[0].name, donate1.name);
+                                        assert.equal(resp.data[0].size, donate1.size);
+                                        assert.equal(resp.data[0].detail, donate1.detail);
+                                        assert.equal(resp.data[0].image[0].url, donate1.image[0].url);
+                                        assert.equal(resp.data[0].image[1].url, donate1.image[1].url);
+                                        assert.equal(resp.data[0].donator, donate1.donator);
+                                        assert.equal(resp.data[0].receiver, donate1.receiver);
+
+                                        assert.equal(resp.data[1].name, donate3.name);
+                                        assert.equal(resp.data[1].size, donate3.size);
+                                        assert.equal(resp.data[1].detail, donate3.detail);
+                                        assert.equal(resp.data[1].image[0].url, donate3.image[0].url);
+                                        assert.equal(resp.data[1].image[1].url, donate3.image[1].url);
+                                        assert.equal(resp.data[1].donator, donate3.donator);
+                                        assert.equal(resp.data[1].receiver, donate3.receiver);
+                                        done();
+                                    });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    it('should be donate history get by donator', (done) => {
+        var donate1 = new Donate({
+            name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ S',
+            size: 'S',
+            detail: 'เสื้อยี่ห้อ 1 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
+            image: [
+                {
+                    url: 'image1-1.png'
+                },
+                {
+                    url: 'image1-2.png'
+                }
+            ],
+            donator: '001',
+            receiver: ''
+        });
+
+        var donate2 = new Donate({
+            name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ M',
+            size: 'M',
+            detail: 'เสื้อยี่ห้อ 2 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
+            image: [
+                {
+                    url: 'image2-1.png'
+                },
+                {
+                    url: 'image2-2.png'
+                }
+            ],
+            donator: '002',
+            receiver: ''
+        });
+
+        var donate3 = new Donate({
+            name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ L',
+            size: 'L',
+            detail: 'เสื้อยี่ห้อ 3 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
+            image: [
+                {
+                    url: 'image3-1.png'
+                },
+                {
+                    url: 'image3-2.png'
+                }
+            ],
+            donator: '003',
+            receiver: '001'
+        });
+
+        var body = {
+            donator: '001',
+        }
+
+        donate1.save((err, don3) => {
+            if (err) {
+                return done(err);
+            } else {
+                donate2.save((err, don1) => {
+                    if (err) {
+                        return done(err);
+                    } else {
+                        donate3.save((err, don2) => {
+                            if (err) {
+                                return done(err);
+                            } else {
+                                request(app)
+                                    .post('/api/donates-history-donator')
+                                    .set('Authorization', 'Bearer ' + token)
+                                    .send(body)
+                                    .expect(200)
+                                    .end((err, res) => {
+                                        if (err) {
+                                            return done(err);
+                                        }
+                                        var resp = res.body;
+                                        console.log(resp);
+                                        assert.equal(resp.data[0].name, donate1.name);
+                                        assert.equal(resp.data[0].size, donate1.size);
+                                        assert.equal(resp.data[0].detail, donate1.detail);
+                                        assert.equal(resp.data[0].image[0].url, donate1.image[0].url);
+                                        assert.equal(resp.data[0].image[1].url, donate1.image[1].url);
+                                        assert.equal(resp.data[0].donator, donate1.donator);
+                                        assert.equal(resp.data[0].receiver, donate1.receiver);
+                                        done();
+                                    });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    it('should be donate history get by receiver', (done) => {
+        var donate1 = new Donate({
+            name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ S',
+            size: 'S',
+            detail: 'เสื้อยี่ห้อ 1 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
+            image: [
+                {
+                    url: 'image1-1.png'
+                },
+                {
+                    url: 'image1-2.png'
+                }
+            ],
+            donator: '001',
+            receiver: ''
+        });
+
+        var donate2 = new Donate({
+            name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ M',
+            size: 'M',
+            detail: 'เสื้อยี่ห้อ 2 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
+            image: [
+                {
+                    url: 'image2-1.png'
+                },
+                {
+                    url: 'image2-2.png'
+                }
+            ],
+            donator: '002',
+            receiver: ''
+        });
+
+        var donate3 = new Donate({
+            name: 'เสื้อยืดสีฟ้าลายการ์ตูนไซส์ L',
+            size: 'L',
+            detail: 'เสื้อยี่ห้อ 3 ซื้อมาเมื่อปีที่เเล้ว แต่ไม่ได้ใส่',
+            image: [
+                {
+                    url: 'image3-1.png'
+                },
+                {
+                    url: 'image3-2.png'
+                }
+            ],
+            donator: '003',
+            receiver: '001'
+        });
+
+        var body = {
+            receiver: '001',
+        }
+
+        donate1.save((err, don3) => {
+            if (err) {
+                return done(err);
+            } else {
+                donate2.save((err, don1) => {
+                    if (err) {
+                        return done(err);
+                    } else {
+                        donate3.save((err, don2) => {
+                            if (err) {
+                                return done(err);
+                            } else {
+                                request(app)
+                                    .post('/api/donates-history-receiver')
+                                    .set('Authorization', 'Bearer ' + token)
+                                    .send(body)
+                                    .expect(200)
+                                    .end((err, res) => {
+                                        if (err) {
+                                            return done(err);
+                                        }
+                                        var resp = res.body;
+                                        console.log(resp);
+                                        assert.equal(resp.data[0].name, donate3.name);
+                                        assert.equal(resp.data[0].size, donate3.size);
+                                        assert.equal(resp.data[0].detail, donate3.detail);
+                                        assert.equal(resp.data[0].image[0].url, donate3.image[0].url);
+                                        assert.equal(resp.data[0].image[1].url, donate3.image[1].url);
+                                        assert.equal(resp.data[0].donator, donate3.donator);
+                                        assert.equal(resp.data[0].receiver, donate3.receiver);
+                                        done();
+                                    });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
 
     afterEach(function (done) {
         Donate.remove().exec(done);

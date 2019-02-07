@@ -34,5 +34,23 @@ module.exports = function (app) {
     app.route('/api/all-donates')
         .get(controller.getList)
 
+    app.route('/api/donates-history-all')
+        .post(
+            controller.findDonateByUser,
+            controller.returnDataByUser
+        )
+
+    app.route('/api/donates-history-donator')
+        .post(
+            controller.findDonateByDonator,
+            controller.returnDataByDonator
+        )
+
+    app.route('/api/donates-history-receiver')
+        .post(
+            controller.findDonateByReceiver,
+            controller.returnDataByReceiver
+        )
+
     app.param('donateId', controller.getByID);
 }

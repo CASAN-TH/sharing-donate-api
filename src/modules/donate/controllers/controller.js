@@ -119,19 +119,19 @@ exports.findDonateDetailById = function (req, res, next) {
         }
     })
 
-}
+};
 
 exports.returnDonateDetail = function (req, res) {
     res.jsonp({
         status: 200,
         data: req.donateDetailData
     })
-}
+};
 
 exports.findAndUpdateDonate = function (req, res, next) {
     var product_id = req.body.product_id
     var user_id = req.body.user_id
-    Donate.findByIdAndUpdate(product_id, { status: false, revicer: user_id }, { new: true }, function (err, datas) {
+    Donate.findByIdAndUpdate(product_id, { status: false, receiver: user_id }, { new: true }, function (err, datas) {
         if (err) {
             return res.status(400).send({
                 status: 400,
@@ -139,19 +139,18 @@ exports.findAndUpdateDonate = function (req, res, next) {
             });
         } else {
             req.acceptData = datas
-            // console.log(req.AcceptData)
             next()
         }
     })
 
-}
+};
 
 exports.returnAcceptData = function (req, res) {
     res.jsonp({
         status: 200,
         data: req.acceptData
     })
-}
+};
 
 exports.fineDonateBySize = function (req, res, next) {
     var getSize = req.body.size
@@ -167,11 +166,80 @@ exports.fineDonateBySize = function (req, res, next) {
         }
     })
 
-}
+};
 
 exports.returnSize = function (req, res) {
     res.jsonp({
         status: 200,
         data: req.getDonateBySize
     })
-}
+};
+
+exports.findDonateByUser = (req, res, next) => {
+    var donator_id = req.body.donator;
+    var receiver_id = req.body.receiver;
+    Donate.find({ $or: [{ donator: donator_id }, { receiver: receiver_id }] }, (err, result) => {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            req.result = result
+            next();
+        }
+    });
+};
+
+exports.returnDataByUser = (req, res, next) => {
+    res.jsonp({
+        status: 200,
+        data: req.result
+    })
+};
+
+exports.findDonateByDonator = (req, res, next) => {
+    var donator_id = req.body.donator;
+    Donate.find({ donator: donator_id }, (err, result) => {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            req.result = result
+            next();
+        }
+    });
+};
+
+exports.returnDataByDonator = (req, res, next) => {
+    res.jsonp({
+        status: 200,
+        data: req.result
+    })
+};
+
+exports.findDonateByReceiver = (req, res, next) => {
+    var receiver_id = req.body.receiver;
+    Donate.find({ receiver: receiver_id }, (err, result) => {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            req.result = result
+            next();
+        }
+    });
+};
+
+exports.returnDataByReceiver = (req, res, next) => {
+    res.jsonp({
+        status: 200,
+        data: req.result
+    })
+};
+
+
