@@ -453,7 +453,6 @@ describe('Donate CRUD routes tests', function () {
                 }
             ],
             donator: "purity",
-            status: false
         })
 
         Donate2.save(function (err, do2) {
@@ -466,7 +465,8 @@ describe('Donate CRUD routes tests', function () {
                 }
 
                 var getSize = {
-                    size: 'L'
+                    size: 'L',
+                    keyword: 'ทหาร'
                 }
                 request(app)
                     .post('/api/get-donate-by-size')
@@ -480,6 +480,9 @@ describe('Donate CRUD routes tests', function () {
                         var resp = res.body;
                         // console.log(resp);
                         assert.equal(resp.data[0].size, 'L')
+                        assert.equal(resp.data[0].name, 'เสื้อลายทหาร')
+                        assert.equal(resp.data[0].detail, 'กินได้ ขายอร่อย ฝากก็งาม')
+
                         done()
                     });
             })
@@ -563,7 +566,6 @@ describe('Donate CRUD routes tests', function () {
                                             return done(err);
                                         }
                                         var resp = res.body;
-                                        console.log(resp);
                                         assert.equal(resp.data[0].name, donate1.name);
                                         assert.equal(resp.data[0].size, donate1.size);
                                         assert.equal(resp.data[0].detail, donate1.detail);
@@ -664,7 +666,6 @@ describe('Donate CRUD routes tests', function () {
                                             return done(err);
                                         }
                                         var resp = res.body;
-                                        console.log(resp);
                                         assert.equal(resp.data[0].name, donate1.name);
                                         assert.equal(resp.data[0].size, donate1.size);
                                         assert.equal(resp.data[0].detail, donate1.detail);
@@ -757,7 +758,6 @@ describe('Donate CRUD routes tests', function () {
                                             return done(err);
                                         }
                                         var resp = res.body;
-                                        console.log(resp);
                                         assert.equal(resp.data[0].name, donate3.name);
                                         assert.equal(resp.data[0].size, donate3.size);
                                         assert.equal(resp.data[0].detail, donate3.detail);
